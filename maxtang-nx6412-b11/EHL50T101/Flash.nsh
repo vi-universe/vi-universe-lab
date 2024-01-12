@@ -1,0 +1,1 @@
+Fpt.efi -f EHL50T101.bin
