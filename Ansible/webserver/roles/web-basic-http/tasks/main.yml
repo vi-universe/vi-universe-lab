@@ -1,0 +1,24 @@
+---
+# tasks file for web-basic-http
+ - name: set hostname
+   shell: 'hostnamectl set-hostname {{ inventory_hostname }}'
+
+ - name: restart systemd-networkd
+   shell: 'systemctl restart systemd-networkd'
+
+ - name: install httpd
+   shell: 'tdnf install -y httpd --nogpgcheck'
+
+ - name: allow inbound http 80
+   shell: 'iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT'
+ 
+ - name: clear /var/www/html directory
+   shell: 'rm /var/www/html/*'
+
+ - name: copy files to var/www/html
+   ansible.builtin.copy:
+        src: "{{ html }}"
+        dest: var/www/html/
+        mode: '0755'
+ - name: restart httpd service
+   shell: 'systemctl restart httpd'

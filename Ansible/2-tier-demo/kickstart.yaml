@@ -1,0 +1,16 @@
+---
+- hosts: 
+   - demo-db
+  gather_facts: yes
+  become: yes
+  roles:
+   - db-demo
+   
+#- hosts: 
+#   - demo-app 
+#  gather_facts: yes
+#  become: yes
+#  roles:
+#   - app-demo
+#
+     

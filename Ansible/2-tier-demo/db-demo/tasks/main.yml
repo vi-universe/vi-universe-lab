@@ -1,0 +1,59 @@
+---
+# tasks file for db-demo
+
+
+  # VM preperation 
+ - name: prep photonos -> change hostname
+   shell: 'hostnamectl set-hostname {{ hostnamedbsrv }}'
+ 
+ - name: restart systemd-networkd
+   shell: 'systemctl restart systemd-networkd'
+  # Installation httpd & sqlite
+ - name: install httpd
+   shell: 'tdnf install -y httpd --nogpgcheck'
+ - name: install sqlite
+   shell: 'tdnf install -y sqlite --nogpgcheck'
+ - name: allow inbound http & 3306   
+   shell: 'iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT'
+   shell: 'iptables -A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT'  
+ 
+ - name: start webserver
+   shell: 'systemctl start httpd'
+ 
+ - name: enable webserver
+   shell: 'systemctl enable httpd'
+  # Configuration   
+ - name: make a directory to store the database file
+   command: bash -c "mkdir /etc/httpd/db"
+ 
+ - name: prep folder permission
+   shell: 'chown apache:apache /etc/httpd/db'
+    
+ - name: copy /etc/httpd/cgi-bin/data.py
+   ansible.builtin.copy:
+        src: "{{ datapath }}"
+        dest: /etc/httpd/cgi-bin/
+        mode: '0755'
+ 
+ - name: copy create_db.sql script
+   ansible.builtin.copy:
+        src: "{{ createdb }}"
+        dest: /tmp/
+        mode: '0755'
+ 
+ - name: create_db.sql
+   shell: 'sqlite3 /etc/httpd/db/clients.db < /tmp/create_db.sql'
+ 
+ - name: set database file owner
+   shell: 'chown apache:apache /etc/httpd/db/clients.db'
+ 
+ - name: copy files/demo-db/httpd.conf 
+   ansible.builtin.copy:
+        src: "{{ httpdconfdb }}"
+        dest: /etc/httpd/conf/httpd.conf
+        mode: '0755'
+ 
+ - name: restart webserver
+   shell: 'systemctl restart httpd'
+ 
+   

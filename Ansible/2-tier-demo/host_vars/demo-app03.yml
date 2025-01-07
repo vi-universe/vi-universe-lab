@@ -1,0 +1,6 @@
+hostnameappsrv: 'demo-app03.2-tier.lab'
+httpdconfapp: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/2-tier-demo/app-demo/files/httpd.conf
+httpdsslconfapp: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/2-tier-demo/app-demo/files/httpd-ssl.conf
+httpdsslcrt: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/2-tier-demo/app-demo/files/server.crt
+httpdsslkey: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/2-tier-demo/app-demo/files/server.key
+appscript: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/2-tier-demo/app-demo/files/demo-app03/app.py

@@ -1,0 +1,4 @@
+hostnamedbsrv: 'demo-db02.2-tier.lab'
+datapath: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/consolidated_2-tier-demo/db-demo/files/data.py
+createdb: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/consolidated_2-tier-demo/db-demo/files/create_db.sql
+httpdconfdb: /Users/ckremer/Documents/GitHub/Ansible/vi-universe.lab/consolidated_2-tier-demo/db-demo/files/httpd.conf

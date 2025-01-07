@@ -1,0 +1,50 @@
+---
+# tasks file for app-demo
+  # VM preperation 
+ - name: prep photonos -> change hostname
+   shell: 'hostnamectl set-hostname {{ hostnameappsrv }}'
+
+ - name: restart systemd-networkd
+   shell: 'systemctl restart systemd-networkd'
+   
+  # Installation httpd
+ - name: install httpd
+   shell: 'tdnf install -y httpd --nogpgcheck'
+
+ - name: allow inbound https 8443
+   shell: 'iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT'
+
+ - name: copy files/demo-app/httpd.conf 
+   ansible.builtin.copy:
+        src: "{{ httpdconfapp }}"
+        dest: /etc/httpd/conf/httpd.conf
+        mode: '0755'
+
+ - name: copy files/demo-app/httpd-ssl.conf 
+   ansible.builtin.copy:
+        src: "{{ httpdsslconfapp }}"
+        dest: /etc/httpd/conf/extra/httpd-ssl.conf
+        mode: '0755'
+
+ - name: copy certificate
+   ansible.builtin.copy:
+        src: "{{ httpdsslcrt }}"
+        dest: /etc/httpd/conf/server.crt
+        mode: '0755'
+
+ - name: copy key
+   ansible.builtin.copy:
+        src: "{{ httpdsslkey }}"
+        dest: /etc/httpd/conf/server.key
+        mode: '0755'
+ - name: copy app.py
+   ansible.builtin.copy:
+        src: "{{ appscript }}"
+        dest: /etc/httpd/cgi-bin/app.py
+        mode: '0755'
+
+ - name: start httpd
+   shell: 'systemctl start httpd'
+  
+ - name: enable httpd
+   shell:  'systemctl enable httpd'

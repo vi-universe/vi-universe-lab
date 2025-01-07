@@ -1,0 +1,1 @@
+openssl req -x509 -nodes -days 1825 -newkey rsa:2048 -keyout app.key -out app.pem -config app-cert.conf
